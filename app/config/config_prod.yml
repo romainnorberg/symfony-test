@@ -1,0 +1,28 @@
+imports:
+    - { resource: config.yml }
+
+parameters:
+    database_driver: pdo_mysql
+    database_host: "%env(MYSQL_ADDON_HOST)%"
+    database_name: "%env(MYSQL_ADDON_DB)%"
+    database_user: "%env(MYSQL_ADDON_USER)%"
+    database_password: "%env(MYSQL_ADDON_PASSWORD)%"
+    database_port: "%env(MYSQL_ADDON_PORT)%"
+    charset:  UTF8
+
+framework:
+    serializer:
+        cache: serializer.mapping.cache.apcu
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
